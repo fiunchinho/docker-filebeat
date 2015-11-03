@@ -1,0 +1,156 @@
+################### Filebeat Configuration Example #########################
+
+############################# Filebeat ######################################
+filebeat:
+  # List of prospectors to fetch data.
+  prospectors:
+    # Each - is a prospector. Below are the prospector specific configurations
+    -
+      # Paths that should be crawled and fetched. Glob based paths.
+      # To fetch all ".log" files from a specific level of subdirectories
+      # /var/log/*/*.log can be used.
+      # For each file found under this path, a harvester is started.
+      # Make sure not file is defined twice as this can lead to unexpected behaviour.
+      paths:
+        - "-"
+
+      # Configure the file encoding for reading file with international characters
+      # supported encodings:
+      #   plain, utf-8, utf-16be-bom, utf-16be, utf-16le, big5, gb18030, gbk, hzgb2312,
+      #   euckr, eucjp, iso2022jp, shiftjis, iso8859-63, iso8859-6i, iso8859-8e,
+      #   iso8859-8i
+      encoding: utf-8
+
+      # Type of the files. Based on this the way the file is read is decided.
+      # The different types cannot be mixed in one prospector
+      #
+      # Possible options are:
+      # * log: Reads every line of the log file (default)
+      # * stdin: Reads the standard in
+      type: stdin
+
+      # Optional additional fields. These field can be freely picked
+      # to add additional information to the crawled log files for filtering
+      #fields:
+      #  level: debug
+      #  review: 1
+
+      # Ignore files which were modified more then the defined timespan in the past
+      # Time strings like 2h (2 hours), 5m (5 minutes) can be used.
+      #ignore_older:
+
+      # Scan frequency in seconds.
+      # How often these files should be checked for changes. In case it is set
+      # to 0s, it is done as often as possible. Default: 10s
+      scan_frequency: 0s
+
+      # Defines the buffer size every harvester uses when fetching the file
+      #harvester_buffer_size: 16384
+
+      # Always tail on log rotation. Disabled by default
+      # Note: This may skip entries
+      #tail_on_rotate: false
+
+  # General filebeat configuration options
+  #
+  # Event count spool threshold - forces network flush if exceeded
+  #spool_size: 1024
+
+  # Defines how often the spooler is flushed. After idle_timeout the spooler is
+  # Flush even though spool_size is not reached.
+  #idle_timeout: 5s
+
+  # Name of the registry file. Per default it is put in the current working
+  # directory. In case the working directory is changed after when running
+  # filebeat again, indexing starts from the beginning again.
+  #registry_file: .filebeat
+
+  # Full Path to directory with additional prospector configuration files. Each file must end with .yml
+  # These config files must have the full filebeat config part inside, but only
+  # the prospector part is processed. All global options like spool_size are ignored.
+  # The config_dir MUST point to a different directory then where the main filebeat config file is in.
+  config_dir:
+
+
+############################# Output ##########################################
+
+# Configure what outputs to use when sending the data collected by filebeat.
+# You can enable one or multiple outputs by setting enabled option to true.
+output:
+#  file:
+#    enabled: true
+#    path: "/packetbeat"
+#    filename: packetbeat
+#    rotate_every_kb: 1000
+#    number_of_files: 7
+  ### Logstash as output
+  logstash:
+    # Uncomment out this option if you want to output to Logstash. The default is false.
+    enabled: true
+
+    # The Logstash hosts
+    hosts: ["LOGSTASH_HOST:LOGSTASH_PORT"]
+
+    # Optional load balance the events between the Logstash hosts
+    #loadbalance: true
+
+    # Optional index name. The default index name is filebeat.
+    #index: filebeat
+
+    # Optional TLS. The default is on
+    tls:
+      disabled: true
+
+      # List of root certificates for HTTPS server verifications
+      #certificate_authorities: ["/etc/pki/root/ca.pem"]
+
+      # Certificate for TLS client authentication
+      #certificate: "/etc/pki/client/cert.pem"
+
+      # Client Certificate Key
+      #certificate_key: "/etc/pki/client/cert.key"
+
+      # Controls whether the client verifies server certificates and host name.
+      # If insecure is set to true, all server host names and certificates will be
+      # accepted. In this mode TLS based connections are susceptible to
+      # man-in-the-middle attacks. Use only for testing.
+      #insecure: true
+
+      # Configure cipher suites to be used for TLS connections
+      #cipher_suites: []
+
+      # Configure curve types for ECDHE based cipher suites
+      #curve_types: []
+
+############################# Shipper #########################################
+
+shipper:
+  # The name of the shipper that publishes the network data. It can be used to group
+  # all the transactions sent by a single shipper in the web interface.
+  # If this options is not defined, the hostname is used.
+  #name:
+
+  # The tags of the shipper are included in their own field with each
+  # transaction published. Tags make it easy to group servers by different
+  # logical properties.
+  #tags: ["service-X", "web-tier"]
+
+  # Uncomment the following if you want to ignore transactions created
+  # by the server on which the shipper is installed. This option is useful
+  # to remove duplicates if shippers are installed on multiple servers.
+  #ignore_outgoing: true
+
+
+############################# Logging #########################################
+
+logging:
+#  selectors: []
+#
+#  # Rotator config
+#  files:
+#    path:
+#    name:
+#    rotateEveryBytes:
+#    keepFiles:
+  to_syslog: false
+  to_files: false
