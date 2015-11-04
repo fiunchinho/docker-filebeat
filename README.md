@@ -12,10 +12,10 @@ curl -XPUT 'http://elasticsearch_host:9200/_template/filebeat?pretty' -d@binary/
 ## Running
 To start the container run
 ```
-docker run -e "LOGSTASH_HOST=logstash.tld" -e "LOGSTASH_PORT=5001" fiunchinho/filebeat
+docker run -e "LOGSTASH_HOST=logstash.tld" -e "LOGSTASH_PORT=5001" -e "INDEX=logstash" fiunchinho/filebeat
 ```
 
 If you want Filebeat to read from stdin, make the container interactive
 ```
-docker run -i -e "LOGSTASH_HOST=logstash.tld" -e "LOGSTASH_PORT=5001" fiunchinho/filebeat
+docker run -i -e "LOGSTASH_HOST=logstash.tld" -e "LOGSTASH_PORT=5001" -e "INDEX=logstash" fiunchinho/filebeat
 ```
