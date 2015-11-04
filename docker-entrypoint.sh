@@ -6,4 +6,4 @@ cat filebeat.yml | sed "s/LOGSTASH_HOST/$LOGSTASH_HOST/" | sed "s/LOGSTASH_PORT/
 cat filebeat.yml.tmp > filebeat.yml
 rm filebeat.yml.tmp
 
-exec "$@"x
+exec "$@"
