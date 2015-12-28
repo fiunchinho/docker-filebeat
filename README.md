@@ -17,10 +17,10 @@ docker run -e "LOGSTASH_HOST=logstash.tld" -e "LOGSTASH_PORT=5001" -e "INDEX=log
 
 If you want Filebeat to read from stdin, make the container interactive
 ```
-docker run -i -e "LOGSTASH_HOST=logstash.tld" -e "LOGSTASH_PORT=5001" -e "INDEX=logstash" fiunchinho/filebeat
+docker run -i -e "LOGSTASH_HOST=logstash.tld" -e "LOGSTASH_PORT=5001" -e "INDEX=logstash" fiunchinho/docker-filebeat
 ```
 
 This image contains a sample configuration file that expects logs coming from stdin, but you can load your own configuration file by mounting the config file from your docker host:
 ```
-docker run -v "/path/to/your/filebeat.yml:/filebeat.yml" "-e "LOGSTASH_HOST=logstash.tld" -e "LOGSTASH_PORT=5001" -e "INDEX=logstash" fiunchinho/filebeat
+docker run -v "/path/to/your/filebeat.yml:/filebeat.yml" "-e "LOGSTASH_HOST=logstash.tld" -e "LOGSTASH_PORT=5001" -e "INDEX=logstash" fiunchinho/docker-filebeat
 ```
