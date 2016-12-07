@@ -5,4 +5,4 @@ COPY binary/filebeat /filebeat
 COPY filebeat.yml /filebeat.yml
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/filebeat", "-c", "/filebeat.yml"]
+CMD ["/filebeat", "-e", "-d", "*", "/filebeat.yml"]
